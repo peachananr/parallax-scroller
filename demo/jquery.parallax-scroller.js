@@ -96,36 +96,35 @@
             
             if (settings.retainNativeScroll == true) {
               var wh = $(document).height();
+              var cond = originY < wh - $(window).height()
             } else {
               var wh = el.find(".ps-scroller").height()
+              var cond = originY < wh  - el.height()
             }      
             
-            if (originY < wh  - el.height() && originY > 0 ) {
+            if ( cond && originY > 0 ) {
               var backgroundPos = el3.css('backgroundPosition').split(" "),
                   y = originY/(wh - el.height()) * 100,
                   delta = -e.originalEvent.detail || e.originalEvent.wheelDelta;
             
-            if (isTouching == true) {
-              var actuel = event.touches[0].pageY,
-                  delta =  -1 * (debut - actuel);
-            }  
+              if (isTouching == true) {
+                var actuel = event.touches[0].pageY,
+                    delta =  -1 * (debut - actuel);
+              }  
             
             
               
               // Scrolling Up   
-             if (delta < 0) {
-               y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);                 
-               
-             } else {
-               // Scrolling Down
-               y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
-               
-                
-             }           
-               
-             // Set the new Y Coord for background
-             var coords = '50% '+ y + '%';
-             el3.css({ "background-position": coords });
+              if (delta < 0) {
+                y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+              } else {
+                // Scrolling Down
+                y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+              }           
+              
+              // Set the new Y Coord for background
+              var coords = '50% '+ y + '%';
+              el3.css({ "background-position": coords });
                
             }
             
