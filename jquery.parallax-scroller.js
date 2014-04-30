@@ -5,7 +5,7 @@
  * http://www.thepetedesign.com
  *
  * Scroll through lists with a smooth
- * parallax effect 
+ * parallax effects 
  *
  * https://github.com/peachananr/parallax-scroller
  * 
@@ -22,6 +22,7 @@
     startPosition: "0%",
     retainNativeScroll: true
   };  
+  
   
   $.fn.parallaxScroller = function(options){
     return this.each(function(){
@@ -60,13 +61,31 @@
         
       }
       
+      // Swipe Support
+
+      var debut,
+          isTouching = false;
+      
+      el.on('touchstart', function() {
+        if (event.touches.length == 1) {
+          debut = event.touches[0].pageY;
+          isTouching = true;
+        }
+      });   
+      
+      el.on('touchend', function() {
+        isTouching = false;
+        debut = null;
+      })    
+      
+      
       // If Parallax is enable, run this
       if (settings.parallax == true) {
         el.find('.ps-list-item').each(function(){
           var el3 = $(this);
           
           // bind on scroll to create parallax effect on the background 
-          el.on('mousewheel DOMMouseScroll', function(e) {
+          el.on('mousewheel DOMMouseScroll touchmove', function(e) {
 
             if (settings.retainNativeScroll == true) {
               originY = $(document).scrollTop();
@@ -85,19 +104,21 @@
                 var backgroundPos = el3.css('backgroundPosition').split(" "),
                     y = originY/(wh - el.height()) * 100,
                     delta = -e.originalEvent.detail || e.originalEvent.wheelDelta;
-                  // Scrolling Up   
-                 if (delta < 0) {
-                   y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
-                 } else {
-                   // Scrolling Down
-                   y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+                
+                
+                 // Scrolling Up   
+                if (delta < 0) {
+                  y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+                } else {
+                  // Scrolling Down
+                  y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+                  
                    
-                    
-                 }           
-                   
-                 // Set the new Y Coord for background
-                 var coords = '50% '+ y + '%';
-                 el3.css({ "background-position": coords });
+                }           
+                  
+                // Set the new Y Coord for background
+                var coords = '50% '+ y + '%';
+                el3.css({ "background-position": coords });
                  
               }
               
@@ -113,17 +134,32 @@
       
       // Bind a scrolling event that will let users scroll down the container
       if (settings.retainNativeScroll != true) {
-        el.on('mousewheel DOMMouseScroll', function(e, delta) {
+        
+        
+        el.on('touchmove mousewheel DOMMouseScroll', function(e, delta) {
           var $scrollTop = originY;
-
+          
 
           delta = delta || -e.originalEvent.detail / 3 || e.originalEvent.wheelDelta / 120;
-
-
-          $scrollTop = Math.min(el.find(".ps-scroller").height()  - el.height(), Math.max(0, parseInt($scrollTop - delta * 30)));
-          el.find(".ps-scroller").stop().animate({
-              top: -1 * $scrollTop + 'px'
-          }, 0, 'linear');
+          
+          if (isTouching == true) {
+            var actuel = event.touches[0].pageY,
+            delta = debut - actuel;
+            if (Math.abs(delta) >= 30) {
+              $scrollTop = Math.min(el.find(".ps-scroller").height()  - el.height(), Math.max(0, parseInt($scrollTop - (delta/6) * -1)));
+              el.find(".ps-scroller").stop().animate({
+                  top: -1 * $scrollTop + 'px'
+              }, 0, 'linear');
+            }
+          } else {
+            $scrollTop = Math.min(el.find(".ps-scroller").height()  - el.height(), Math.max(0, parseInt($scrollTop - delta * 30)));
+            el.find(".ps-scroller").stop().animate({
+                top: -1 * $scrollTop + 'px'
+            }, 0, 'linear');
+          }
+          
+          
+          
 
 
           originY = $scrollTop;
@@ -145,7 +181,6 @@
           };
           
           
-          
           viewport.bottom = viewport.top + win.height();
     
           var bounds = this.offset();
@@ -157,6 +192,8 @@
             bounds.top = (this.offset().top - el.find(".ps-scroller").offset().top);
             bounds.bottom = (this.offset().top - el.find(".ps-scroller").offset().top + this.outerHeight()) + this.outerHeight();
           }
+          
+            
           
           
           return (!(viewport.bottom < bounds.top || viewport.top > (bounds.bottom - 100)));
