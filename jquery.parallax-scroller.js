@@ -18,9 +18,9 @@
   var defaults = {
     parallaxSpeed: 3,
     tilt: false,
-    parallax: true,
+    parallaxOnMobile: true,
     startPosition: "0%",
-    retainNativeScroll: true
+    retainNativeScroll: true,
   };  
   
   
@@ -65,69 +65,76 @@
 
       var debut,
           isTouching = false;
-      
-      el.on('touchstart', function() {
-        if (event.touches.length == 1) {
-          debut = event.touches[0].pageY;
-          isTouching = true;
-        }
-      });   
-      
-      el.on('touchend', function() {
-        isTouching = false;
-        debut = null;
-      })    
-      
-      
-      // If Parallax is enable, run this
-      if (settings.parallax == true) {
-        el.find('.ps-list-item').each(function(){
-          var el3 = $(this);
-          
-          // bind on scroll to create parallax effect on the background 
-          el.on('mousewheel DOMMouseScroll touchmove', function(e) {
+      if (parallaxOnMobile == true) {
+        el.on('touchstart', function() {
+          if (event.touches.length == 1) {
+            debut = event.touches[0].pageY;
+            isTouching = true;
+          }
+        });   
 
-            if (settings.retainNativeScroll == true) {
-              originY = $(document).scrollTop();
-            }
+        el.on('touchend', function() {
+          isTouching = false;
+          debut = null;
+        })
+      }
+      
+      
+      
+      el.find('.ps-list-item').each(function(){
+        var el3 = $(this);
+        
+        // bind on scroll to create parallax effect on the background 
+        el.on('touchmove mousewheel DOMMouseScroll', function(e) {
+      
+          if (settings.retainNativeScroll == true) {
+            originY = $(document).scrollTop();
+          }
+          
+          // Parallax startes/stops only when object is on screen
+          if (el3.is_on_screen()) {
             
-            // Parallax startes/stops only when object is on screen
-            if (el3.is_on_screen()) {
+            if (settings.retainNativeScroll == true) {
+              var wh = $(document).height();
+            } else {
+              var wh = el.find(".ps-scroller").height()
+            }      
+            
+            if (originY < wh  - el.height() && originY > 0 ) {
+              var backgroundPos = el3.css('backgroundPosition').split(" "),
+                  y = originY/(wh - el.height()) * 100,
+                  delta = -e.originalEvent.detail || e.originalEvent.wheelDelta;
+            
+            if (isTouching == true) {
+              var actuel = event.touches[0].pageY,
+                  delta =  -1 * (debut - actuel);
+            }  
+            
+            
               
-              if (settings.retainNativeScroll == true) {
-                var wh = $(document).height();
-              } else {
-                var wh = el.find(".ps-scroller").height()
-              }      
-              
-              if (originY < wh  - el.height() && originY > 0 ) {
-                var backgroundPos = el3.css('backgroundPosition').split(" "),
-                    y = originY/(wh - el.height()) * 100,
-                    delta = -e.originalEvent.detail || e.originalEvent.wheelDelta;
+              // Scrolling Up   
+             if (delta < 0) {
+               y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);                 
+               
+             } else {
+               // Scrolling Down
+               y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
+               
                 
-                
-                 // Scrolling Up   
-                if (delta < 0) {
-                  y = Math.min(Math.max(parseFloat(backgroundPos[1]) + (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
-                } else {
-                  // Scrolling Down
-                  y = Math.min(Math.max(parseFloat(backgroundPos[1]) - (settings.parallaxSpeed/5), parseFloat(settings.startPosition)), 100);
-                  
-                   
-                }           
-                  
-                // Set the new Y Coord for background
-                var coords = '50% '+ y + '%';
-                el3.css({ "background-position": coords });
-                 
-              }
-              
+             }           
+               
+             // Set the new Y Coord for background
+             var coords = '50% '+ y + '%';
+             el3.css({ "background-position": coords });
                
             }
-
-          });
+            
+             
+          }
+      
         });
-      }
+      });
+      
       
       
       
@@ -192,9 +199,6 @@
             bounds.top = (this.offset().top - el.find(".ps-scroller").offset().top);
             bounds.bottom = (this.offset().top - el.find(".ps-scroller").offset().top + this.outerHeight()) + this.outerHeight();
           }
-          
-            
-          
           
           return (!(viewport.bottom < bounds.top || viewport.top > (bounds.bottom - 100)));
       };

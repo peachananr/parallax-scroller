@@ -11,7 +11,7 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 [View demo](http://www.thepetedesign.com/demos/parallax-scroller_demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop have been tested. Not tested on IE. Parallax is disabled on mobile due to performance.
+Modern browsers such as Chrome, Firefox, and Safari on both desktop and mobile phones have been tested. Not tested on IE. Parallax can be disabled on mobile if you see a performance drop.
 
 ## Basic Usage
 To use this plugin, simply include the latest jQuery library (preferably version 2.0.0 or higher) together with `jquery.parallax-scroll.js` and `parallax-scroll.css` into your document's `<head>` follow by an HTML markup as follows:
@@ -41,7 +41,7 @@ Note: All the elements directly under the selector you called the script on, wil
  $(".list").parallaxScroll({
    parallaxSpeed: 3,            // You can set the speed of the parallax when scroll. Values can goes from 1 - 10. The default value is 3
    tilt: false,                 // You can define how much you want the list to tilt. Values can be negative (tilt to the left) or positive (tilt to the right). For example: -1, -2, -3 or 1, 2, 3. The default value is false.
-   parallax: true,              // You can choose NOT to make the list parallax by toggling this to true, but who would do that?
+   parallaxOnMobile: true,              // You can choose NOT to make the list parallax on mobile by toggling this to false. The default value is true
    startPosition: "0%",         // Since the plugin is using background CSS style, you can define the initial point of the background so that it is centered the way you like. This option on excepts percentage. The default value is "0%"
    retainNativeScroll: true     // This option will let you override native scroll, and add the effect onto a scrollable container instead of the whole page. Simply toggle this to false, and div container "list" will be scrollable. The default value is true.
  });
