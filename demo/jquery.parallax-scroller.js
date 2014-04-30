@@ -65,7 +65,7 @@
 
       var debut,
           isTouching = false;
-      if (parallaxOnMobile == true) {
+      if (settings.parallaxOnMobile == true) {
         el.on('touchstart', function() {
           if (event.touches.length == 1) {
             debut = event.touches[0].pageY;
