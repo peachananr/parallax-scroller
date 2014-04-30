@@ -11,7 +11,7 @@ License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/l
 [View demo](http://www.thepetedesign.com/demos/parallax-scroller_demo.html)
 
 ## Compatibility
-Modern browsers such as Chrome, Firefox, and Safari on both desktop and mobile phones have been tested. Not tested on IE. Parallax can be disabled on mobile if you see a performance drop.
+Modern browsers such as Chrome, Firefox, and Safari on both desktop and iOS have been tested. Unfortunately, Android has a `touchmove` event bug that prevents me from supporting parallax effect. Not tested on IE. Parallax can be disabled on mobile if you see a performance drop.
 
 ## Basic Usage
 To use this plugin, simply include the latest jQuery library (preferably version 2.0.0 or higher) together with `jquery.parallax-scroll.js` and `parallax-scroll.css` into your document's `<head>` follow by an HTML markup as follows:
