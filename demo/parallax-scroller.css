@@ -4,7 +4,7 @@
 }
 
 .ps-native {
-  overflow: auto;
+  overflow: visible;
   max-height: none;
 }
 
