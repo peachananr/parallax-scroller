@@ -38,7 +38,7 @@ Once you got your list setup, call the function as follows:
 Note: All the elements directly under the selector you called the script on, will be considered as a parallax item.
 
 ````javascript
- $(".list").parallaxScroll({
+ $(".list").parallaxScroller({
    parallaxSpeed: 3,            // You can set the speed of the parallax when scroll. Values can goes from 1 - 10. The default value is 3
    tilt: false,                 // You can define how much you want the list to tilt. Values can be negative (tilt to the left) or positive (tilt to the right). For example: -1, -2, -3 or 1, 2, 3. The default value is false.
    parallaxOnMobile: true,              // You can choose NOT to make the list parallax on mobile by toggling this to false. The default value is true
