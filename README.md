@@ -4,11 +4,10 @@ Created by [Pete R.](http://www.thepetedesign.com), Founder of [Travelistly](htt
 
 License: [Attribution-ShareAlike 4.0 International](http://creativecommons.org/licenses/by-sa/4.0/deed.en_US)
 
-[![Parallax Scroller](http://www.thepetedesign.com/images/parallax-scroller_image.png "Parallax Scroller")](http://www.thepetedesign.com/demos/parallax-scroller_demo.html)
 
 
 ## Demo
-[View demo](http://www.thepetedesign.com/demos/parallax-scroller_demo.html)
+[View demo](http://peachananr.github.io/parallax-scroller/demo/index.html)
 
 ## Compatibility
 Modern browsers such as Chrome, Firefox, and Safari on both desktop and iOS have been tested. Unfortunately, Android has a `touchmove` event bug that prevents me from supporting parallax effect. Not tested on IE. Parallax can be disabled on mobile if you see a performance drop.
